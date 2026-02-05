@@ -5,8 +5,6 @@ import path from "path";
 
 dotenv.config();
 
-// Path to SSL certificate
-const caCertPath = path.join(process.cwd(), "certs", "global-bundle.pem");
 
 const db = mysql.createPool({
     host: process.env.SQL_HOST,
@@ -20,16 +18,13 @@ const db = mysql.createPool({
     queueLimit: 0,
     connectTimeout: 10000,
 
-    ssl: {
-        ca: fs.readFileSync(caCertPath),
-        rejectUnauthorized: true
-    }
+    
 });
 
 export const connectDB = async () => {
     try {
         const connection = await db.getConnection();
-        console.log("✅ AWS RDS MySQL connected successfully");
+        console.log("✅MySQL connected successfully");
         connection.release();
     } catch (err) {
         console.error("❌ Connection is not established:", err.message);
